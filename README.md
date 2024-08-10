@@ -9,7 +9,7 @@ Welcome to **Bash-Hero** – the ultimate RPG adventure game that lives in your 
 First things first, let's get you set up with Bash-Hero:
 
 ```bash
-git clone https://github.com/yourusername/bash-hero.git
+git clone https://github.com/psyfercom/bash-hero.git
 cd bash-hero
 ```
 
