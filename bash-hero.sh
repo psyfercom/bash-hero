@@ -6,34 +6,44 @@ declare -r ACTIONS_PER_HEART_LOSS=100  # Lose a heart every 100 actions
 declare -r XP_BAR_LENGTH=20  # Length of the ASCII progress bar
 
 # RPG Stats Variables
-HEARTS=$MAX_HEARTS  # Use a separate variable to track the current number of hearts
+HEARTS=$MAX_HEARTS
 RUPEES=0
 XP=0
 XP_LEVEL=1
-ACTIONS=100  # Start actions at 100
+ACTIONS=100
 XP_PROGRESS=0
-XP_TO_NEXT_LEVEL=100  # Set to 100 for easier demonstration
+XP_TO_NEXT_LEVEL=100
 
-LOGGED_IN=false
-
-# User details
 USERNAME=""
-USER_FILE=""
 SAVE_FILE=""
 
-# Probability and Reward Arrays
-declare -A RUPEE_REWARDS=(
-    [0]=950   # 95% chance of getting 0 rupees
-    [1]=980   # 3% chance of getting 1 rupee
-    [5]=990   # 1% chance of getting 5 rupees
-    [10]=995  # 0.5% chance of getting 10 rupees
-    [25]=999  # 0.4% chance of getting 25 rupees
-    [50]=1000 # 0.1% chance of getting 50 rupees
-)
+# Function to prompt for hero's name and create a save file
+initialize_hero() {
+    if [[ ! -f "$SAVE_FILE" ]]; then
+        read -rp "Enter your hero's name: " USERNAME
+        SAVE_FILE="$HOME/.bash_hero_${USERNAME}_save"
+        create_save_file
+    else
+        load_save_file
+    fi
+}
 
-# Color Codes
-GREEN='\033[0;32m'
-RESET='\033[0m'
+# Function to create a save file
+create_save_file() {
+    echo -e "username=$USERNAME\nhearts=$HEARTS\nrupees=$RUPEES\nxp=$XP\nxp_level=$XP_LEVEL\nactions=$ACTIONS\nxp_progress=$XP_PROGRESS\nxp_to_next_level=$XP_TO_NEXT_LEVEL" > "$SAVE_FILE"
+    echo "Welcome, $USERNAME! Your adventure begins."
+}
+
+# Function to load data from the save file
+load_save_file() {
+    source "$SAVE_FILE"
+    echo "Welcome back, $USERNAME!"
+}
+
+# Function to save the current game state to the save file
+save_game() {
+    echo -e "username=$USERNAME\nhearts=$HEARTS\nrupees=$RUPEES\nxp=$XP\nxp_level=$XP_LEVEL\nactions=$ACTIONS\nxp_progress=$XP_PROGRESS\nxp_to_next_level=$XP_TO_NEXT_LEVEL" > "$SAVE_FILE"
+}
 
 # Display the hero's stats
 display_stats() {
@@ -42,7 +52,6 @@ display_stats() {
     for ((i=HEARTS; i<MAX_HEARTS; i++)); do echo -n "🖤 "; done
     echo -e "\n| Rupees: $RUPEES"
 
-    # Display XP and progress with simplified ASCII bar
     local progress=$(( (XP_PROGRESS * XP_BAR_LENGTH) / XP_TO_NEXT_LEVEL ))
     echo -n "| XP: $XP (Level $XP_LEVEL) Progress: [${GREEN}"
     for ((i=0; i<progress; i++)); do echo -n "\\"; done
@@ -99,11 +108,15 @@ award_rupees() {
 
 # Main loop
 while true; do
+    if [[ -z "$USERNAME" ]]; then
+        initialize_hero
+    fi
+
     display_stats
     read -rp "> " command
     case "$command" in
-        exit) break ;;
-        *) eval "$command" && { award_rupees; gain_xp 5; } ;;
+        exit) save_game; break ;;
+        *) eval "$command" && { award_rupees; gain_xp 5; save_game; } ;;
     esac
     update_stats
 done
