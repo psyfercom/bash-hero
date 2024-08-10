@@ -1,4 +1,4 @@
-# Bash-Hero: Your Terminal Adventure Awaits! 🗡️ 🧪 ⛨
+# Bash-Hero: Your Terminal Adventure Awaits! 🗡️ ⛨ 🧚
 
 Welcome to **Bash-Hero** – the ultimate RPG adventure game that lives in your terminal! Step into the boots of a brave hero, gather rupees, level up, and face the challenges of the command line. Are you ready to embark on a journey like no other? Let's dive in!
 
