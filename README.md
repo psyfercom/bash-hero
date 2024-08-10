@@ -14,7 +14,8 @@
 1. Download the `bash-hero.sh` script:
 
    ```bash
-git clone https://github.com/psyfercom/bash-hero.git
+   
+    git clone https://github.com/psyfercom/bash-hero.git
    ```
 
 2. Make the script executable:
