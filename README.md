@@ -20,7 +20,7 @@ Welcome to **Bash Hero**, the terminal-based RPG you never knew you needed! Perf
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/YourUsername/bash-hero.git
+    git clone https://github.com/psyfercom/bash-hero.git
    cd bash-hero
    ```
 
