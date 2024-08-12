@@ -105,7 +105,7 @@ display_stats() {
 
 # Function to display verbose stats
 display_verbose_stats() {
-    echo -e "\nVerbose Stats for $USERNAME:"
+    echo -e "\nProfile: $USERNAME"
     echo "Hearts: $HEARTS"
     echo "Rupees: $RUPEES"
     echo "XP: $XP"
@@ -198,14 +198,14 @@ add_to_path() {
 main_menu() {
     while true; do
         echo -e "\n--- Bash Hero Menu ---"
-        echo "1. Your Name"
+        echo "1. $USERNAME's Profile"
         echo "2. Settings"
         echo "3. Exit"
         read -rp "Choose an option: " option
         case $option in
             1) display_verbose_stats ;;
             2) settings_menu ;;
-            3) exit 0 ;;
+            3) break ;;
             *) echo "Invalid option. Please choose again." ;;
         esac
     done
@@ -233,11 +233,21 @@ settings_menu() {
 }
 
 # Start the game
-bash_hero() {
+start_game() {
     if [[ -z "$USERNAME" ]]; then
         initialize_hero
     fi
-    main_menu
+
+    while true; do
+        display_stats
+        read -rp "> " command
+        case "$command” in
+menu) main_menu ;;
+exit) save_game; break ;;
+*) eval “$command” && { award_rupees; gain_xp 5; save_game; } ;;
+esac
+update_stats
+done
 }
 
-bash_hero
+start_game
