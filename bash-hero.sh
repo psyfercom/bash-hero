@@ -241,13 +241,13 @@ start_game() {
     while true; do
         display_stats
         read -rp "> " command
-        case "$command” in
-menu) main_menu ;;
-exit) save_game; break ;;
-*) eval “$command” && { award_rupees; gain_xp 5; save_game; } ;;
-esac
-update_stats
-done
+        case "$command" in
+            menu) main_menu ;;
+            exit) save_game; break ;;
+            *) eval "$command" && { award_rupees; gain_xp 5; save_game; } ;;
+        esac
+        update_stats
+    done
 }
 
 start_game
